@@ -8,8 +8,19 @@ import 'express-async-errors'
 import connectDB from './db/connect.js'
 
 //routers
-import authRouter from './routes/authRoutes.js'
-import jobRouter from './routes/jobRoutes.js'
+
+// old
+// import authRouter from './routes/authRoutes.js'
+// import jobRouter from './routes/jobRoutes.js'
+
+// new
+
+import userAuthRouter from './routes/userAuthRoutes.js'
+import userJobsRouter from './routes/userJobsRoutes.js'
+import recruiterAuthRouter from './routes/recruiterAuthRoutes.js'
+import recruiterJobsRouter from './routes/recruiterJobsRoutes.js'
+
+
 
 //middleware
 import notFoundMiddleware from './middleware/not-found.js'
@@ -35,8 +46,13 @@ app.use(xss())
 app.use(mongoSanitize())
 const port = process.env.PORT || 5000
 
-app.use('/api/v1/auth', authRouter)
-app.use('/api/v1/jobs', authenticateUser, jobRouter)
+// app.use('/api/v1/auth', authRouter)
+// app.use('/api/v1/jobs', authenticateUser, jobRouter)
+
+app.use('/api/v1/user-auth',userAuthRouter)
+app.use('/api/v1/user-jobs', authenticateUser, userJobsRouter)
+app.use('/api/v1/recruiter-auth', recruiterAuthRouter)
+app.use('/api/v1/recruiter-jobs',authenticateUser, recruiterJobsRouter)
 
 app.get('*', function (request, response) {
     response.sendFile(path.resolve(__dirname, './client/build', 'index.html'))
