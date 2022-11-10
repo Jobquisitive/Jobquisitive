@@ -2,15 +2,20 @@ import mongoose from 'mongoose'
 import validator from 'validator'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-// import UserJobs from './UserJobs.js'
 
-const UserSchema = mongoose.Schema({
+const RecruiterSchema = mongoose.Schema({
     name: {
         type: String,
         required: [true, 'Please provide name'],
         minLength: 3,
         maxLength: 20,
         trim: true,
+    },
+     companyName: {
+        type: String,
+        trim: true,
+        maxLength: 100,
+        required: [true, 'Please provide company name'],
     },
     email: {
         type: String,
@@ -27,20 +32,10 @@ const UserSchema = mongoose.Schema({
         minLength: 6,
         select: false,
     },
-    location: {
-        type: String,
-        trim: true,
-        maxLength: 20,
-        default: 'my city',
-    },
-    resume: {
-      type: String,
-      required: [true, 'Please provide Google Drive link of the Resume']
-    },
-    // UserJobs Subdocument
 })
 
-UserSchema.pre('save', async function () {
+// to hash the password before saving it to the database:
+RecruiterSchema.pre('save', async function () {
     if (!this.isModified('password')) {
         return
     }
@@ -48,15 +43,15 @@ UserSchema.pre('save', async function () {
     this.password = await bcrypt.hash(this.password, salt)
 })
 
-UserSchema.methods.createJWT = function () {
+RecruiterSchema.methods.createJWT = function () {
     return jwt.sign({ userId: this._id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_LIFETIME,
     })
 }
 
-UserSchema.methods.comparePassword = async function (candidatePassword) {
+RecruiterSchema.methods.comparePassword = async function (candidatePassword) {
     const isMatch = await bcrypt.compare(candidatePassword, this.password)
     return isMatch
 }
 
-export default mongoose.model('User', UserSchema)
+export default mongoose.model('Recruiter', RecruiterSchema)
