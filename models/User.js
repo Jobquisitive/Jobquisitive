@@ -35,7 +35,7 @@ const UserSchema = mongoose.Schema({
     },
     resume: {
       type: String,
-      required: [true, 'Please provide Google Drive link of the Resume']
+      required: [false, 'Please provide Google Drive link of the Resume']
     },
     // UserJobs Subdocument
 })

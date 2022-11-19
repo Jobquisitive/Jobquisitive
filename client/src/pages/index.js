@@ -1,6 +1,7 @@
-import Error from './Error'
-import Landing from './Landing'
-import Register from './Register'
-import ProtectedRoute from './ProtectedRoute'
+import Error from "./Error";
+import Landing from "./Landing";
+import Register from "./Register";
+import ProtectedRoute from "./ProtectedRoute";
+import RegisterRecruiter from "./RegisterRecruiter";
 
-export { Error, Landing, Register, ProtectedRoute }
+export { Error, Landing, Register, ProtectedRoute, RegisterRecruiter };
