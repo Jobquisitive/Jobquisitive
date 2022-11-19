@@ -6,15 +6,16 @@ import { useNavigate } from "react-router-dom";
 
 const initialState = {
   name: "",
+  companyName:"",
   email: "",
   password: "",
   isMember: true,
 };
 
-const Register = () => {
+const RegisterRecruiter = () => {
   const navigate = useNavigate();
   const [values, setValues] = useState(initialState);
-  const { user, isLoading, showAlert, displayAlert, registerUser, loginUser } =
+  const { recruiter, isLoading, showAlert, displayAlert, registerRecruiter, loginRecruiter } =
     useAppContext();
 
   const toggleMember = () => {
@@ -27,30 +28,30 @@ const Register = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const { name, email, password, isMember } = values;
-    if (!email || !password || (!isMember && !name)) {
+    const { name, companyName, email, password, isMember } = values;
+    if (!email || !password || (!isMember && !name) || (!isMember && !companyName)) {
       displayAlert();
       return;
     }
-    const currentUser = { name, email, password };
+    const currentUser = { name, companyName, email, password };
     if (isMember) {
-      loginUser(currentUser);
+      loginRecruiter(currentUser);
     } else {
-      registerUser(currentUser);
+      registerRecruiter(currentUser);
     }
   };
 
   useEffect(() => {
     setTimeout(() => {
-      if (user) {
+      if (recruiter) {
         navigate("/");
       }
     }, 3000);
-  }, [user, navigate]);
+  }, [recruiter, navigate]);
 
   return (
     <Wrapper className="full-page">
-      <h1 className="title">User Register</h1>
+      <h1 className="title">Recruiter Register</h1>
       <form className="form" onSubmit={onSubmit}>
         <Logo />
         <h3>{values.isMember ? "Login" : "Register"}</h3>
@@ -61,6 +62,16 @@ const Register = () => {
             type="text"
             name="name"
             value={values.name}
+            handleChange={handleChange}
+          />
+        )}
+        {/* Company Name */}
+        {!values.isMember && (
+          <FormRow
+            type="text"
+            name="companyName"
+            labelText="Company Name"
+            value={values.companyName}
             handleChange={handleChange}
           />
         )}
@@ -80,7 +91,7 @@ const Register = () => {
         />
 
         <button type="submit" className="btn btn-block" disabled={isLoading}>
-          submit
+          Submit
         </button>
 
         <p>
@@ -94,4 +105,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterRecruiter;

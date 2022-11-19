@@ -7,9 +7,15 @@ import {
     REGISTER_USER_BEGIN,
     REGISTER_USER_SUCCESS,
     REGISTER_USER_ERROR,
+    REGISTER_RECRUITER_BEGIN,
+    REGISTER_RECRUITER_SUCCESS,
+    REGISTER_RECRUITER_ERROR,
     LOGIN_USER_BEGIN,
     LOGIN_USER_SUCCESS,
     LOGIN_USER_ERROR,
+    LOGIN_RECRUITER_BEGIN,
+    LOGIN_RECRUITER_SUCCESS,
+    LOGIN_RECRUITER_ERROR,
     TOGGLE_SIDEBAR,
     LOGOUT_USER,
     UPDATE_USER_BEGIN,
@@ -34,6 +40,7 @@ import {
 } from './actions'
 
 const user = localStorage.getItem('user')
+const recruiter = localStorage.getItem('recruiter')
 const token = localStorage.getItem('token')
 const userLocation = localStorage.getItem('location')
 
@@ -43,9 +50,12 @@ const initialState = {
     alertText: '',
     alertType: '',
     user: user ? JSON.parse(user) : null,
+    recruiter:recruiter?JSON.parse(recruiter):null,
     token: token,
     userLocation: userLocation || '',
     showSidebar: false,
+    // recruiter
+    companyName: '',
     //jobs
     isEditing: false,
     editJobId: '',
@@ -128,7 +138,7 @@ const AppProvider = ({ children }) => {
         dispatch({ type: REGISTER_USER_BEGIN })
         try {
             const response = await axios.post(
-                '/api/v1/auth/register',
+                '/api/v1/user-auth/register-user',
                 currentUser
             )
             console.log(response)
@@ -148,20 +158,64 @@ const AppProvider = ({ children }) => {
         clearAlert()
     }
 
+    const registerRecruiter = async (currentUser) => {
+        dispatch({ type: REGISTER_RECRUITER_BEGIN })
+        try {
+            const response = await axios.post(
+                '/api/v1/recruiter-auth/register-recruiter',
+                currentUser
+            )
+            console.log(response)
+            const { recruiter, token } = response.data
+            dispatch({
+                type: REGISTER_RECRUITER_SUCCESS,
+                payload: { recruiter, token },
+            })
+            addUserToLocalStorage({ recruiter, token})
+        } catch (error) {
+            console.log(error.response)
+            dispatch({
+                type: REGISTER_RECRUITER_ERROR,
+                payload: { msg: error.response.data.msg },
+            })
+        }
+        clearAlert()
+    }
+
     const loginUser = async (currentUser) => {
         dispatch({ type: LOGIN_USER_BEGIN })
         try {
-            const response = await axios.post('/api/v1/auth/login', currentUser)
+            const response = await axios.post('/api/v1/user-auth/login-user', currentUser)
             console.log(response)
-            const { user, token, location } = response.data
+            const { user, token } = response.data
             dispatch({
                 type: LOGIN_USER_SUCCESS,
-                payload: { user, token, location },
+                payload: { user, token },
             })
-            addUserToLocalStorage({ user, token, location })
+            addUserToLocalStorage({ user, token })
         } catch (error) {
             dispatch({
                 type: LOGIN_USER_ERROR,
+                payload: { msg: error.response.data.msg },
+            })
+        }
+        clearAlert()
+    }
+
+    const loginRecruiter = async (currentUser) => {
+        dispatch({ type: LOGIN_RECRUITER_BEGIN })
+        try {
+            const response = await axios.post('/api/v1/recruiter-auth/login-recruiter', currentUser)
+            console.log(response)
+            const { recruiter, token } = response.data
+            dispatch({
+                type: LOGIN_RECRUITER_SUCCESS,
+                payload: { recruiter, token },
+            })
+            addUserToLocalStorage({ recruiter, token })
+        } catch (error) {
+            dispatch({
+                type: LOGIN_RECRUITER_ERROR,
                 payload: { msg: error.response.data.msg },
             })
         }
@@ -216,7 +270,7 @@ const AppProvider = ({ children }) => {
         try {
             const { position, company, jobLocation, jobType, status } = state
 
-            await fetchAuth.post('/jobs', {
+            await fetchAuth.post('/user-jobs', {
                 company,
                 position,
                 jobLocation,
@@ -242,7 +296,7 @@ const AppProvider = ({ children }) => {
     const getAllJobs = async () => {
         // will add page later
         const { page, search, searchStatus, searchType, sort } = state
-        let url = `/jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`
+        let url = `/user-jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`
         if (search) {
             url = url + `&search=${search}`
         }
@@ -272,7 +326,7 @@ const AppProvider = ({ children }) => {
         try {
             const { position, company, jobLocation, jobType, status } = state
 
-            await fetchAuth.patch(`/jobs/${state.editJobId}`, {
+            await fetchAuth.patch(`/user-jobs/${state.editJobId}`, {
                 company,
                 position,
                 jobLocation,
@@ -296,7 +350,7 @@ const AppProvider = ({ children }) => {
     const deleteJob = async (jobId) => {
         dispatch({ type: DELETE_JOB_BEGIN })
         try {
-            await fetchAuth.delete(`/jobs/${jobId}`)
+            await fetchAuth.delete(`/user-jobs/${jobId}`)
             getAllJobs()
         } catch (error) {
             logoutUser()
@@ -306,7 +360,7 @@ const AppProvider = ({ children }) => {
     const showStats = async () => {
         dispatch({ type: SHOW_STATS_BEGIN })
         try {
-            const { data } = await fetchAuth.get('/jobs/stats')
+            const { data } = await fetchAuth.get('/user-jobs/stats')
             const { defaultStats, monthlyApplications } = data
             dispatch({
                 type: SHOW_STATS_SUCCESS,
@@ -333,7 +387,9 @@ const AppProvider = ({ children }) => {
                 displayAlert,
                 clearAlert,
                 registerUser,
+                registerRecruiter,
                 loginUser,
+                loginRecruiter,
                 toggleSidebar,
                 logoutUser,
                 updateUser,
