@@ -29,8 +29,13 @@ import {
     CREATE_JOB_BEGIN,
     CREATE_JOB_SUCCESS,
     CREATE_JOB_ERROR,
+    POST_JOB_BEGIN,
+    POST_JOB_SUCCESS,
+    POST_JOB_ERROR,
     GET_JOBS_BEGIN,
     GET_JOBS_SUCCESS,
+    GET_OPPORTUNITIES_BEGIN,
+    GET_OPPORTUNITIES_SUCCESS,
     SET_EDIT_JOB,
     DELETE_JOB_BEGIN,
     EDIT_JOB_BEGIN,
@@ -67,9 +72,11 @@ const initialState = {
     jobLocation: userLocation || '',
     jobTypeOptions: ['full-time', 'part-time', 'remote', 'internship'],
     jobType: 'full-time',
+    jobDescription:'',
     statusOptions: ['pending', 'interview', 'declined'],
     status: 'pending',
     jobs: [],
+    opportunities: [],
     totalJobs: 0,
     numOfPages: 1,
     page: 1,
@@ -321,6 +328,35 @@ const AppProvider = ({ children }) => {
         }
         clearAlert()
     }
+    
+    // Recruiter posted job :
+    const postJob = async () => {
+        dispatch({ type: POST_JOB_BEGIN })
+        try {
+            const { position, company, jobLocation, jobType, jobDescription } = state
+
+            await fetchAuth.post('/recruiter-jobs', {
+                company,
+                position,
+                jobLocation,
+                jobType,
+                jobDescription,
+            })
+            dispatch({
+                type: POST_JOB_SUCCESS,
+            })
+            //dispatch({ type: CLEAR_VALUES })
+            clearValues()
+        } catch (error) {
+            if (error.response.status !== 401) {
+                dispatch({
+                    type: POST_JOB_ERROR,
+                    payload: { msg: error.response.data.msg },
+                })
+            }
+        }
+        clearAlert()
+    }
 
     const getAllJobs = async () => {
         // will add page later
@@ -343,6 +379,29 @@ const AppProvider = ({ children }) => {
             })
         } catch (error) {
             logoutUser()
+        }
+        clearAlert()
+    }
+
+    const getAllOpportunitiesRecruiter = async () => {
+        // will add page later
+        const { page, search, searchStatus, searchType, sort } = state
+        let url = `/recruiter-jobs`
+        dispatch({ type: GET_OPPORTUNITIES_BEGIN })
+        try {
+            const { data } = await fetchAuth.get(url)
+            const opportunities = data.jobs;
+            const result = opportunities.filter(opportunity => opportunity.createdBy === state.recruiter._id);
+
+            dispatch({
+                type: GET_OPPORTUNITIES_SUCCESS,
+                payload: {
+                    opportunities:result
+                },
+            })
+        } catch (error) {
+            console.log(error);
+            // logoutUser()
         }
         clearAlert()
     }
@@ -426,7 +485,9 @@ const AppProvider = ({ children }) => {
                 handleChange,
                 clearValues,
                 createJob,
+                postJob,
                 getAllJobs,
+                getAllOpportunitiesRecruiter,
                 setEditJob,
                 deleteJob,
                 editJob,

@@ -7,6 +7,7 @@ import BigSidebar from './BigSidebar'
 import FormRowSelect from './FormRowSelect'
 import SearchContainer from './SearchContainer'
 import JobsContainer from './JobsContainer'
+import OpportunitiesContainer from './OpportunitiesContainer'
 import StatsContainer from './StatsContainer'
 import StatsItem from './StatsItem'
 import ChartsContainer from './ChartsContainer'
@@ -22,6 +23,7 @@ export {
     FormRowSelect,
     SearchContainer,
     JobsContainer,
+    OpportunitiesContainer,
     StatsContainer,
     StatsItem,
     ChartsContainer,

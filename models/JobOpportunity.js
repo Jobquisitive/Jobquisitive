@@ -28,8 +28,8 @@ const JobOpportunitySchema = mongoose.Schema(
         },
         createdBy: {
             type: mongoose.Types.ObjectId,
-            ref: 'User',
-            required: [true, 'Please provide user'],
+            ref: 'Recruiter',
+            required: [true, 'Please provide recruiter'],
         },
     },
     { timestamps: true }
