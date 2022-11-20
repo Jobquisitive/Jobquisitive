@@ -2,7 +2,7 @@ import { FormRow, Alert, FormRowSelect } from '../../Components'
 import { useAppContext } from '../../Context/appContext'
 import Wrapper from '../../assets/wrappers/DashboardFormPage'
 
-const AddJob = () => {
+const PostJob = () => {
     const {
         isLoading,
         isEditing,
@@ -13,17 +13,16 @@ const AddJob = () => {
         jobLocation,
         jobType,
         jobTypeOptions,
-        status,
-        statusOptions,
+        jobDescription,
         handleChange,
         clearValues,
-        createJob,
+        postJob,
         editJob,
     } = useAppContext()
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (!position || !company || !jobLocation) {
+        if (!position || !company || !jobLocation || !jobDescription || !jobType ) {
             displayAlert()
             return
         }
@@ -31,7 +30,7 @@ const AddJob = () => {
             editJob()
             return
         }
-        createJob()
+        postJob()
     }
 
     const handleJobInput = (e) => {
@@ -45,38 +44,21 @@ const AddJob = () => {
             <form className='form'>
                 <h3>{isEditing ? 'edit job' : 'add job'} </h3>
                 {showAlert && <Alert />}
-
-                {/* position */}
                 <div className='form-center'>
-                    <FormRow
-                        type='text'
-                        name='position'
-                        value={position}
-                        handleChange={handleJobInput}
-                    />
-                    {/* company */}
+                 {/* company */}
                     <FormRow
                         type='text'
                         name='company'
                         value={company}
                         handleChange={handleJobInput}
                     />
-                    {/* location */}
+                     {/* position */}
                     <FormRow
                         type='text'
-                        labelText='location'
-                        name='jobLocation'
-                        value={jobLocation}
+                        name='position'
+                        value={position}
                         handleChange={handleJobInput}
                     />
-                    {/* job status */}
-                    <FormRowSelect
-                        name='status'
-                        value={status}
-                        handleChange={handleJobInput}
-                        list={statusOptions}
-                    />
-
                     {/* job type */}
                     <FormRowSelect
                         labelText='type'
@@ -87,6 +69,24 @@ const AddJob = () => {
                     >
                         Job Type
                     </FormRowSelect>
+                    {/* location */}
+                    <FormRow
+                        type='text'
+                        labelText='location'
+                        name='jobLocation'
+                        value={jobLocation}
+                        handleChange={handleJobInput}
+                    />
+                    {/* job Description */}
+                    <FormRow
+                        labelText='Description'
+                        name='jobDescription'
+                        value={jobDescription}
+                        handleChange={handleJobInput}
+                    >
+                        Job Description
+                    </FormRow>
+                    
 
                     <div className='btn-container'>
                         <button
@@ -113,4 +113,4 @@ const AddJob = () => {
     )
 }
 
-export default AddJob
+export default PostJob

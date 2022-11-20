@@ -29,6 +29,9 @@ import {
     CREATE_JOB_BEGIN,
     CREATE_JOB_SUCCESS,
     CREATE_JOB_ERROR,
+     POST_JOB_BEGIN,
+    POST_JOB_SUCCESS,
+    POST_JOB_ERROR,
     GET_JOBS_BEGIN,
     GET_JOBS_SUCCESS,
     SET_EDIT_JOB,
@@ -67,6 +70,7 @@ const initialState = {
     jobLocation: userLocation || '',
     jobTypeOptions: ['full-time', 'part-time', 'remote', 'internship'],
     jobType: 'full-time',
+    jobDescription:'',
     statusOptions: ['pending', 'interview', 'declined'],
     status: 'pending',
     jobs: [],
@@ -321,6 +325,35 @@ const AppProvider = ({ children }) => {
         }
         clearAlert()
     }
+    
+    // Recruiter posted job :
+    const postJob = async () => {
+        dispatch({ type: POST_JOB_BEGIN })
+        try {
+            const { position, company, jobLocation, jobType, jobDescription } = state
+
+            await fetchAuth.post('/recruiter-jobs', {
+                company,
+                position,
+                jobLocation,
+                jobType,
+                jobDescription,
+            })
+            dispatch({
+                type: POST_JOB_SUCCESS,
+            })
+            //dispatch({ type: CLEAR_VALUES })
+            clearValues()
+        } catch (error) {
+            if (error.response.status !== 401) {
+                dispatch({
+                    type: POST_JOB_ERROR,
+                    payload: { msg: error.response.data.msg },
+                })
+            }
+        }
+        clearAlert()
+    }
 
     const getAllJobs = async () => {
         // will add page later
@@ -426,6 +459,7 @@ const AppProvider = ({ children }) => {
                 handleChange,
                 clearValues,
                 createJob,
+                postJob,
                 getAllJobs,
                 setEditJob,
                 deleteJob,

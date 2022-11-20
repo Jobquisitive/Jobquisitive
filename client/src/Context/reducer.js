@@ -26,6 +26,9 @@ import {
     CREATE_JOB_BEGIN,
     CREATE_JOB_SUCCESS,
     CREATE_JOB_ERROR,
+    POST_JOB_BEGIN,
+    POST_JOB_SUCCESS,
+    POST_JOB_ERROR,
     GET_JOBS_BEGIN,
     GET_JOBS_SUCCESS,
     SET_EDIT_JOB,
@@ -270,6 +273,29 @@ const reducer = (state, action) => {
             alertText: action.payload.msg,
         }
     }
+
+    if (action.type === POST_JOB_BEGIN) {
+        return { ...state, isLoading: true }
+    }
+    if (action.type === POST_JOB_SUCCESS) {
+        return {
+            ...state,
+            isLoading: false,
+            showAlert: true,
+            alertType: 'success',
+            alertText: 'New Job Posted!',
+        }
+    }
+    if (action.type === POST_JOB_ERROR) {
+        return {
+            ...state,
+            isLoading: false,
+            showAlert: true,
+            alertType: 'danger',
+            alertText: action.payload.msg,
+        }
+    }
+
     if (action.type === GET_JOBS_BEGIN) {
         return { ...state, isLoading: true, showAlert: false }
     }
