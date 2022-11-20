@@ -14,7 +14,8 @@ import {
 } from "./pages/dashboard";
 import {
   RecruiterProfile,
-  PostJob
+  PostJob,
+  AllOpportunities
 }
 from "./pages/recruiter-dashboard"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -34,12 +35,14 @@ function App() {
           }
         >
           <Route index element={<Stats />} />
-          <Route path="all-jobs" element={<AllJobs />} />
+          
           {user && <Route path="profile" element={<Profile />} />}
           {user && <Route path="add-job" element={<AddJob />} />}
+          {user && <Route path="all-jobs" element={<AllJobs />} />}
 
           {recruiter && <Route path="profile" element={<RecruiterProfile />} />}
           {recruiter && <Route path="add-job" element={<PostJob />} />}
+          {recruiter && <Route path="all-jobs" element={<AllOpportunities />} />}
         </Route>
 
         <Route path="/landing" element={<Landing />} />
