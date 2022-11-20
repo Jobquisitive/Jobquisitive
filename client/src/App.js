@@ -12,9 +12,15 @@ import {
   Profile,
   SharedLayout,
 } from "./pages/dashboard";
+import {
+  RecruiterProfile,
+}
+from "./pages/recruiter-dashboard"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useAppContext } from './Context/appContext.js';
 
 function App() {
+  const { user, recruiter } = useAppContext();
   return (
     <BrowserRouter>
       <Routes>
@@ -29,7 +35,8 @@ function App() {
           <Route index element={<Stats />} />
           <Route path="all-jobs" element={<AllJobs />} />
           <Route path="add-job" element={<AddJob />} />
-          <Route path="profile" element={<Profile />} />
+          {user && <Route path="profile" element={<Profile />} />}
+          {recruiter && <Route path="profile" element={<RecruiterProfile />} />}
         </Route>
         <Route path="/landing" element={<Landing />} />
         <Route path="/register-user" element={<Register />} />

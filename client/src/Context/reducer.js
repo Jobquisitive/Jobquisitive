@@ -18,6 +18,9 @@ import {
     UPDATE_USER_BEGIN,
     UPDATE_USER_SUCCESS,
     UPDATE_USER_ERROR,
+    UPDATE_RECRUITER_BEGIN,
+    UPDATE_RECRUITER_SUCCESS,
+    UPDATE_RECRUITER_ERROR,
     HANDLE_CHANGE,
     CLEAR_VALUES,
     CREATE_JOB_BEGIN,
@@ -164,6 +167,7 @@ const reducer = (state, action) => {
         return {
             ...initialState,
             user: null,
+            recruiter:null,
             token: null,
             userLocation: '',
             jobLocation: '',
@@ -197,6 +201,35 @@ const reducer = (state, action) => {
             alertText: action.payload.msg,
         }
     }
+
+    if (action.type === UPDATE_RECRUITER_BEGIN) {
+        return {
+            ...state,
+            isLoading: true,
+        }
+    }
+    if (action.type === UPDATE_RECRUITER_SUCCESS) {
+        return {
+            ...state,
+            isLoading: false,
+            recruiter: action.payload.recruiter,
+            token: action.payload.token,
+            jobLocation: action.payload.location,
+            showAlert: true,
+            alertType: 'success',
+            alertText: 'User Profile Updated!',
+        }
+    }
+    if (action.type === UPDATE_RECRUITER_ERROR) {
+        return {
+            ...state,
+            isLoading: false,
+            showAlert: true,
+            alertType: 'danger',
+            alertText: action.payload.msg,
+        }
+    }
+
     if (action.type === HANDLE_CHANGE) {
         return {
             ...state,

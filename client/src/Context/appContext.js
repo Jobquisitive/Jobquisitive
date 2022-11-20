@@ -21,6 +21,9 @@ import {
     UPDATE_USER_BEGIN,
     UPDATE_USER_SUCCESS,
     UPDATE_USER_ERROR,
+    UPDATE_RECRUITER_BEGIN,
+    UPDATE_RECRUITER_SUCCESS,
+    UPDATE_RECRUITER_ERROR,
     HANDLE_CHANGE,
     CLEAR_VALUES,
     CREATE_JOB_BEGIN,
@@ -122,16 +125,16 @@ const AppProvider = ({ children }) => {
         }, 3000)
     }
 
-    const addUserToLocalStorage = ({ user, token, location }) => {
+    const addUserToLocalStorage = ({ user, recruiter, token }) => {
+        localStorage.setItem('recruiter', JSON.stringify(recruiter))
         localStorage.setItem('user', JSON.stringify(user))
         localStorage.setItem('token', token)
-        localStorage.setItem('location', location)
     }
 
     const removeUserFromLocalStorage = () => {
+        localStorage.removeItem('recruiter')
         localStorage.removeItem('user')
         localStorage.removeItem('token')
-        localStorage.removeItem('location')
     }
 
     const registerUser = async (currentUser) => {
@@ -250,6 +253,32 @@ const AppProvider = ({ children }) => {
             if (error.response.status !== 401) {
                 dispatch({
                     type: UPDATE_USER_ERROR,
+                    payload: { msg: error.response.data.msg },
+                })
+            }
+        }
+        clearAlert()
+    }
+
+    const updateRecruiter = async (currentUser) => {
+        dispatch({ type: UPDATE_RECRUITER_BEGIN })
+        try {
+            const { data } = await fetchAuth.patch(
+                '/recruiter-auth/update-recruiter',
+                currentUser
+            )
+            const { recruiter, token } = data
+
+            dispatch({
+                type: UPDATE_RECRUITER_SUCCESS,
+                payload: { recruiter, token },
+            })
+
+            addUserToLocalStorage({ recruiter, token })
+        } catch (error) {
+            if (error.response.status !== 401) {
+                dispatch({
+                    type: UPDATE_RECRUITER_ERROR,
                     payload: { msg: error.response.data.msg },
                 })
             }
@@ -393,6 +422,7 @@ const AppProvider = ({ children }) => {
                 toggleSidebar,
                 logoutUser,
                 updateUser,
+                updateRecruiter,
                 handleChange,
                 clearValues,
                 createJob,
