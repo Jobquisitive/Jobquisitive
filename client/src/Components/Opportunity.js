@@ -1,61 +1,70 @@
-import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
-import { useAppContext } from '../Context/appContext'
-import Wrapper from '../assets/wrappers/Job'
-import JobInfo from './JobInfo'
-import moment from 'moment'
+import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { useAppContext } from "../Context/appContext";
+import Wrapper from "../assets/wrappers/Job";
+import JobInfo from "./JobInfo";
+import moment from "moment";
 
 const Opportunity = ({
-    _id,
-    position,
-    company,
-    jobLocation,
-    jobType,
-    jobDescription,
-    createdAt,
+  _id,
+  position,
+  company,
+  jobLocation,
+  jobType,
+  jobDescription,
+  createdAt,
 }) => {
-    const { setEditJob, deleteJob } = useAppContext()
+  const { setEditJob, deleteJob, setCurrentOpportunity } = useAppContext();
 
-    let date = moment(createdAt)
-    date = date.format('MMM Do, YYYY')
+  let date = moment(createdAt);
+  date = date.format("MMM Do, YYYY");
 
-    return (
-        <Wrapper>
-            <header>
-                <div className='main-icon'>{company.charAt(0)}</div>
-                <div className='info'>
-                    <h5>{position}</h5>
-                    <p>{company}</p>
-                </div>
-            </header>
-            <div className='content'>
-                <div className='content-center'>
-                    <JobInfo icon={<FaLocationArrow />} text={jobLocation} />
-                    <JobInfo icon={<FaCalendarAlt />} text={date} />
-                    <JobInfo icon={<FaBriefcase />} text={jobType} />
-                    <div>{jobDescription}</div>
-                </div>
-                <footer>
-                    <div className='actions'>
-                        <Link
-                            to='/add-job'
-                            onClick={() => setEditJob(_id)}
-                            className='btn edit-btn'
-                        >
-                            Edit
-                        </Link>
-                        <button
-                            type='button'
-                            className='btn delete-btn'
-                            onClick={() => deleteJob(_id)}
-                        >
-                            Delete
-                        </button>
-                    </div>
-                </footer>
-            </div>
-        </Wrapper>
-    )
-}
+  return (
+    <Wrapper>
+      <header>
+        <div className="main-icon">{company.charAt(0)}</div>
+        <div className="info">
+          <h5>{position}</h5>
+          <p>{company}</p>
+        </div>
+      </header>
+      <div className="content">
+        <div className="content-center">
+          <JobInfo icon={<FaLocationArrow />} text={jobLocation} />
+          <JobInfo icon={<FaCalendarAlt />} text={date} />
+          <JobInfo icon={<FaBriefcase />} text={jobType} />
+          <div>{jobDescription}</div>
+        </div>
+        <footer>
+          <div className="actions">
+            <Link
+              to="/add-job"
+              onClick={() => setEditJob(_id)}
+              className="btn edit-btn"
+            >
+              Edit
+            </Link>
+            <button
+              type="button"
+              className="btn delete-btn"
+              onClick={() => deleteJob(_id)}
+            >
+              Delete
+            </button>
+            <Link
+              to="/opportunity-details"
+              className="btn edit-btn"
+              onClick={() => {
+                setCurrentOpportunity(_id);
+              }}
+            >
+              Details
+            </Link>
+          </div>
+        </footer>
+      </div>
+    </Wrapper>
+  );
+};
 
-export default Opportunity
+export default Opportunity;

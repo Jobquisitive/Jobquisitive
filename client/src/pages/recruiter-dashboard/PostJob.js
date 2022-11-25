@@ -87,7 +87,6 @@ const PostJob = () => {
                         Job Description
                     </FormRow>
                     
-
                     <div className='btn-container'>
                         <button
                             className='btn btn-block submit-btn'

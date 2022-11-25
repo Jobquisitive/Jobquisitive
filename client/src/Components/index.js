@@ -8,6 +8,7 @@ import FormRowSelect from './FormRowSelect'
 import SearchContainer from './SearchContainer'
 import JobsContainer from './JobsContainer'
 import OpportunitiesContainer from './OpportunitiesContainer'
+import UserOpportunitiesContainer from './UserOpportunitiesContainer'
 import StatsContainer from './StatsContainer'
 import StatsItem from './StatsItem'
 import ChartsContainer from './ChartsContainer'
@@ -24,6 +25,7 @@ export {
     SearchContainer,
     JobsContainer,
     OpportunitiesContainer,
+    UserOpportunitiesContainer,
     StatsContainer,
     StatsItem,
     ChartsContainer,

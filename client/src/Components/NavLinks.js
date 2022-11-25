@@ -1,12 +1,14 @@
 import { NavLink } from 'react-router-dom'
 import links from '../utils/links'
+import { useAppContext } from '../Context/appContext.js';
 
 const NavLinks = (props) => {
+    const { user, recruiter } = useAppContext();
     return (
         <div className='nav-links'>
             {links.map((link) => {
                 const { text, path, id, icon } = link
-
+                if (recruiter && id == 5) return;
                 return (
                     <NavLink
                         to={path}

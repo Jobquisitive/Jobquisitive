@@ -96,6 +96,7 @@ const Wrapper = styled.article`
   .delete-btn {
     color: var(--red-dark);
     background: var(--red-light);
+    margin-right: 0.5rem;
   }
   &:hover .actions {
     visibility: visible;

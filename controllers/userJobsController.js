@@ -1,5 +1,7 @@
 import StatusCodes from 'http-status-codes'
 import Job from '../models/UserJobs.js'
+import JobOpportunity from '../models/JobOpportunity.js'
+
 import mongoose from 'mongoose'
 import moment from 'moment'
 import {
@@ -76,6 +78,55 @@ const getAllJobs = async (req, res) => {
 
     res.status(StatusCodes.OK).json({ jobs, totalJobs, numOfPages })
 }
+
+const getAllOpportunities = async (req, res) => {
+    // const { search, status, jobType, sort } = req.query
+    // const queryObject = {
+    //     createdBy: req.user.userId,
+    // }
+    // if (status && status !== 'all') {
+    //     queryObject.status = status
+    // }
+    // if (jobType && jobType !== 'all') {
+    //     queryObject.jobType = jobType
+    // }
+    // if (search) {
+    //     queryObject.position = { $regex: search, $options: 'i' }
+    // }
+
+    // NO AWAIT
+    // let result = JobOpportunity.find(queryObject)
+    let result = JobOpportunity.find({})
+
+    // chain sort conditions
+    // if (sort === 'latest') {
+    //     result = result.sort('-createdAt')
+    // }
+    // if (sort === 'oldest') {
+    //     result = result.sort('createdAt')
+    // }
+    // if (sort === 'a-z') {
+    //     result = result.sort('position')
+    // }
+    // if (sort === 'z-a') {
+    //     result = result.sort('-position')
+    // }
+
+    // setup pagination
+    const page = Number(req.query.page) || 1
+    const limit = Number(req.query.limit) || 10
+    const skip = (page - 1) * limit //10
+    result = result.skip(skip).limit(limit)
+
+    const jobs = await result
+    //const totalJobs = await JobOpportunity.countDocuments(queryObject)
+    //const numOfPages = Math.ceil(totalJobs / limit)
+
+    //res.status(StatusCodes.OK).json({ jobs, totalJobs, numOfPages })
+    res.status(StatusCodes.OK).json({ jobs })
+}
+
+
 const updateJob = async (req, res) => {
     const { id: jobId } = req.params
     const { company, position } = req.body
@@ -97,6 +148,30 @@ const updateJob = async (req, res) => {
     })
     res.status(StatusCodes.OK).json({ updatedJob })
 }
+
+// applied job 
+
+const appliedJob = async (req, res) => {
+    const { id: jobId } = req.params
+    const { user, fileId } = req.body
+    if (!user || !fileId) {
+        throw new BadRequestError('Please Provide All Values')
+    }
+    const job = await JobOpportunity.findOne({ _id: jobId })
+    console.log("opp found", job);
+    if (!job) {
+        throw new NotFoundError(`No job with id ${jobId}`)
+    }
+    // update
+    console.log("User", user);
+    const update = { $push: { usersApplied: {userId: user._id, fileId: fileId}}};
+    const appliedJob = await JobOpportunity.findOneAndUpdate({ _id: jobId }, update, {
+        new: true,
+        runValidators: true,
+    })
+    res.status(StatusCodes.OK).json({ appliedJob })
+}
+
 const showStats = async (req, res) => {
     let stats = await Job.aggregate([
         { $match: { createdBy: mongoose.Types.ObjectId(req.user.userId) } },
@@ -147,4 +222,4 @@ const showStats = async (req, res) => {
     res.status(StatusCodes.OK).json({ defaultStats, monthlyApplications })
 }
 
-export { createJob, deleteJob, updateJob, getAllJobs, showStats }
+export { createJob, appliedJob, deleteJob, updateJob, getAllJobs, getAllOpportunities, showStats }

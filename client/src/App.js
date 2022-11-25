@@ -11,11 +11,13 @@ import {
   Stats,
   Profile,
   SharedLayout,
+  Opportunities
 } from "./pages/dashboard";
 import {
   RecruiterProfile,
   PostJob,
-  AllOpportunities
+  AllOpportunities,
+  OpportunityDetails
 }
 from "./pages/recruiter-dashboard"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -39,10 +41,12 @@ function App() {
           {user && <Route path="profile" element={<Profile />} />}
           {user && <Route path="add-job" element={<AddJob />} />}
           {user && <Route path="all-jobs" element={<AllJobs />} />}
+          {user && <Route path="opportunities" element={<Opportunities />} />}
 
           {recruiter && <Route path="profile" element={<RecruiterProfile />} />}
           {recruiter && <Route path="add-job" element={<PostJob />} />}
           {recruiter && <Route path="all-jobs" element={<AllOpportunities />} />}
+          {recruiter && <Route path="opportunity-details" element={<OpportunityDetails />} />}
         </Route>
 
         <Route path="/landing" element={<Landing />} />

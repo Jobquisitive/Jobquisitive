@@ -28,6 +28,12 @@ const links = [
         path: 'profile',
         icon: <ImProfile />,
     },
+    {
+        id: 5,
+        text: 'opportunities',
+        path: 'opportunities',
+        icon: <ImProfile />,
+    },
 ]
 
 export default links
