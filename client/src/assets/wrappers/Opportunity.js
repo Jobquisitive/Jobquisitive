@@ -41,6 +41,15 @@ const Wrapper = styled.article`
       letter-spacing: var(--letterSpacing);
     }
   }
+
+  #jobD {
+    color: var(--grey-600);
+  }
+
+  #jobDesc {
+    margin-left: 28px;
+  }
+
   .Pending {
     background: #fcefc7;
     color: #e9b949;
@@ -64,10 +73,10 @@ const Wrapper = styled.article`
       grid-template-columns: 1fr 1fr;
     }
     @media (min-width: 992px) {
-      grid-template-columns: 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
     }
     @media (min-width: 1120px) {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
     }
   }
 

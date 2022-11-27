@@ -44,7 +44,7 @@ html {
   --green-dark: #0f5132;
 
   /* fonts  */
-  --headingFont: "Roboto Condensed", Sans-Serif;
+  --headingFont: "Roboto", Sans-Serif;
   --bodyFont: "Cabin", Sans-Serif;
   --small-text: 0.875rem;
   --extra-small-text: 0.7em;
@@ -213,7 +213,7 @@ ul {
   border-radius: var(--borderRadius);
   box-shadow: var(--shadow-2);
   padding: 2rem 2.5rem;
-  margin: 3rem auto;
+  margin: 0rem auto;
   transition: var(--transition);
 }
 .form:hover {
@@ -291,7 +291,8 @@ ul {
 
 .container {
   width: var(--fluid-width);
-  max-width: var(--max-width);
+  /* max-width: var(--max-width); */
+  max-width: fit-content;
   margin: 0 auto;
 }
 .full-page {

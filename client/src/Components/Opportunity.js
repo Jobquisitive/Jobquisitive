@@ -1,7 +1,8 @@
 import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
+import { MdDescription } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useAppContext } from "../Context/appContext";
-import Wrapper from "../assets/wrappers/Job";
+import Wrapper from "../assets/wrappers/Opportunity";
 import JobInfo from "./JobInfo";
 import moment from "moment";
 
@@ -14,7 +15,8 @@ const Opportunity = ({
   jobDescription,
   createdAt,
 }) => {
-  const { setEditJob, deleteJob, setCurrentOpportunity } = useAppContext();
+  const { setEditOpportunity, deleteOpportunity, setCurrentOpportunity } =
+    useAppContext();
 
   let date = moment(createdAt);
   date = date.format("MMM Do, YYYY");
@@ -33,13 +35,18 @@ const Opportunity = ({
           <JobInfo icon={<FaLocationArrow />} text={jobLocation} />
           <JobInfo icon={<FaCalendarAlt />} text={date} />
           <JobInfo icon={<FaBriefcase />} text={jobType} />
-          <div>{jobDescription}</div>
         </div>
+        <p>
+          <strong id="jobD">
+            <JobInfo icon={<MdDescription />} text="Job Description" />
+          </strong>
+          <div id="jobDesc">{jobDescription}</div>
+        </p>
         <footer>
           <div className="actions">
             <Link
               to="/add-job"
-              onClick={() => setEditJob(_id)}
+              onClick={() => setEditOpportunity(_id)}
               className="btn edit-btn"
             >
               Edit
@@ -47,7 +54,7 @@ const Opportunity = ({
             <button
               type="button"
               className="btn delete-btn"
-              onClick={() => deleteJob(_id)}
+              onClick={() => deleteOpportunity(_id)}
             >
               Delete
             </button>

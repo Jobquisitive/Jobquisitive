@@ -34,7 +34,6 @@ import {
   APPLIED_JOB_ERROR,
   GET_CURRENT_OPPORTUNITY_DETAILS_BEGIN,
   GET_CURRENT_OPPORTUNITY_DETAILS_SUCCESS,
-  GET_CURRENT_OPPORTUNITY_DETAILS_ERROR,
   POST_JOB_BEGIN,
   POST_JOB_SUCCESS,
   POST_JOB_ERROR,
@@ -43,10 +42,14 @@ import {
   GET_OPPORTUNITIES_BEGIN,
   GET_OPPORTUNITIES_SUCCESS,
   SET_EDIT_JOB,
+  SET_EDIT_OPPORTUNITY,
   DELETE_JOB_BEGIN,
   EDIT_JOB_BEGIN,
   EDIT_JOB_SUCCESS,
   EDIT_JOB_ERROR,
+  EDIT_OPPORTUNITY_BEGIN,
+  EDIT_OPPORTUNITY_SUCCESS,
+  EDIT_OPPORTUNITY_ERROR,
   SHOW_STATS_BEGIN,
   SHOW_STATS_SUCCESS,
   CLEAR_FILTERS,
@@ -57,18 +60,17 @@ import {
 const user = localStorage.getItem("user");
 const recruiter = localStorage.getItem("recruiter");
 const token = localStorage.getItem("token");
-const userLocation = localStorage.getItem("location");
 
 const initialState = {
   isLoading: false, // changed
   showAlert: false,
   alertText: "",
   alertType: "",
-  user: user ? JSON.parse(user) : null,
+  user: user && user !== "undefined" ? JSON.parse(user) : null,
   fileId: "",
-  recruiter: recruiter ? JSON.parse(recruiter) : null,
+  recruiter:
+    recruiter && recruiter !== "undefined" ? JSON.parse(recruiter) : null,
   token: token,
-  userLocation: userLocation || "",
   showSidebar: false,
   // recruiter
   companyName: "",
@@ -77,12 +79,12 @@ const initialState = {
   editJobId: "",
   position: "",
   company: "",
-  jobLocation: userLocation || "",
-  jobTypeOptions: ["full-time", "part-time", "remote", "internship"],
-  jobType: "full-time",
+  jobLocation: "",
+  jobTypeOptions: ["Full-Time", "Part-Time", "Remote", "Internship"],
+  jobType: "Full-Time",
   jobDescription: "",
-  statusOptions: ["pending", "interview", "declined"],
-  status: "pending",
+  statusOptions: ["Pending", "Interview", "Declined"],
+  status: "Pending",
   jobs: [],
   opportunities: [],
   totalJobs: 0,
@@ -91,10 +93,10 @@ const initialState = {
   stats: {},
   monthlyApplications: [],
   search: "",
-  searchStatus: "all",
-  searchType: "all",
-  sort: "latest",
-  sortOptions: ["latest", "oldest", "a-z", "z-a"],
+  searchStatus: "All",
+  searchType: "All",
+  sort: "Latest",
+  sortOptions: ["Latest", "Oldest", "A-Z", "Z-A"],
   currentOpportunityId: "",
   currentOpportunity: {},
 };
@@ -260,7 +262,10 @@ const AppProvider = ({ children }) => {
   const updateUser = async (currentUser) => {
     dispatch({ type: UPDATE_USER_BEGIN });
     try {
-      const { data } = await fetchAuth.patch("/auth/updateUser", currentUser);
+      const { data } = await fetchAuth.patch(
+        "/user-auth/update-user",
+        currentUser
+      );
       const { user, token, location } = data;
 
       dispatch({
@@ -423,7 +428,6 @@ const AppProvider = ({ children }) => {
 
   const getAllOpportunitiesRecruiter = async () => {
     // will add page later
-    const { page, search, searchStatus, searchType, sort } = state;
     let url = `/recruiter-jobs`;
     dispatch({ type: GET_OPPORTUNITIES_BEGIN });
     try {
@@ -447,8 +451,6 @@ const AppProvider = ({ children }) => {
   };
 
   const getAllOpportunitiesUser = async () => {
-    // will add page later
-    const { page, search, searchStatus, searchType, sort } = state;
     let url = `/user-jobs/opportunities`;
     dispatch({ type: GET_OPPORTUNITIES_BEGIN });
     try {
@@ -469,6 +471,10 @@ const AppProvider = ({ children }) => {
 
   const setEditJob = (id) => {
     dispatch({ type: SET_EDIT_JOB, payload: { id } });
+  };
+
+  const setEditOpportunity = (id) => {
+    dispatch({ type: SET_EDIT_OPPORTUNITY, payload: { id } });
   };
 
   const setCurrentOpportunity = (id) => {
@@ -501,11 +507,48 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  const editOpportunity = async () => {
+    dispatch({ type: EDIT_OPPORTUNITY_BEGIN });
+    try {
+      const { position, company, jobLocation, jobType, jobDescription } = state;
+
+      await fetchAuth.patch(`/recruiter-jobs/${state.editJobId}`, {
+        company,
+        position,
+        jobLocation,
+        jobType,
+        jobDescription,
+      });
+      dispatch({
+        type: EDIT_OPPORTUNITY_SUCCESS,
+      });
+      dispatch({ type: CLEAR_VALUES });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: EDIT_OPPORTUNITY_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
   const deleteJob = async (jobId) => {
     dispatch({ type: DELETE_JOB_BEGIN });
     try {
       await fetchAuth.delete(`/user-jobs/${jobId}`);
       getAllJobs();
+    } catch (error) {
+      logoutUser();
+    }
+  };
+
+  const deleteOpportunity = async (jobId) => {
+    dispatch({ type: DELETE_JOB_BEGIN });
+    try {
+      await fetchAuth.delete(`/recruiter-jobs/${jobId}`);
+      // getAllJobs();
+      getAllOpportunitiesRecruiter();
     } catch (error) {
       logoutUser();
     }
@@ -580,8 +623,11 @@ const AppProvider = ({ children }) => {
         getAllOpportunitiesUser,
         getCurrentOpportunityDetails,
         setEditJob,
+        setEditOpportunity,
         deleteJob,
+        deleteOpportunity,
         editJob,
+        editOpportunity,
         showStats,
         clearFilters,
         changePage,

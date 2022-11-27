@@ -51,10 +51,9 @@ const RegisterRecruiter = () => {
 
   return (
     <Wrapper className="full-page">
-      <h1 className="title">Recruiter Register</h1>
       <form className="form" onSubmit={onSubmit}>
         <Logo />
-        <h3>{values.isMember ? "Login" : "Register"}</h3>
+        <h3>{values.isMember ? "Recruiter Login" : "Recruiter Register"}</h3>
         {showAlert && <Alert />}
         {/* name input */}
         {!values.isMember && (

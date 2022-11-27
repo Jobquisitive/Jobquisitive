@@ -40,11 +40,15 @@ import {
   GET_CURRENT_OPPORTUNITY_DETAILS_SUCCESS,
   GET_CURRENT_OPPORTUNITY_DETAILS_ERROR,
   SET_EDIT_JOB,
+  SET_EDIT_OPPORTUNITY,
   SET_CURRENT_OPPORTUNITY,
   DELETE_JOB_BEGIN,
   EDIT_JOB_BEGIN,
   EDIT_JOB_SUCCESS,
   EDIT_JOB_ERROR,
+  EDIT_OPPORTUNITY_BEGIN,
+  EDIT_OPPORTUNITY_SUCCESS,
+  EDIT_OPPORTUNITY_ERROR,
   SHOW_STATS_BEGIN,
   SHOW_STATS_SUCCESS,
   CLEAR_FILTERS,
@@ -200,8 +204,6 @@ const reducer = (state, action) => {
       user: null,
       recruiter: null,
       token: null,
-      userLocation: "",
-      jobLocation: "",
     };
   }
   if (action.type === UPDATE_USER_BEGIN) {
@@ -301,9 +303,10 @@ const reducer = (state, action) => {
       editJobId: "",
       position: "",
       company: "",
-      jobLocation: state.userLocation,
-      jobType: "full-time",
-      status: "pending",
+      jobLocation: "",
+      jobType: "Full-Time",
+      status: "Pending",
+      jobDescription: "",
     };
     return { ...state, ...initialState };
   }
@@ -390,6 +393,24 @@ const reducer = (state, action) => {
     };
   }
 
+  if (action.type === SET_EDIT_OPPORTUNITY) {
+    const job = state.opportunities.find(
+      (job) => job._id === action.payload.id
+    );
+    const { _id, position, company, jobLocation, jobType, jobDescription } =
+      job;
+    return {
+      ...state,
+      isEditing: true,
+      editJobId: _id,
+      position,
+      company,
+      jobLocation,
+      jobType,
+      jobDescription,
+    };
+  }
+
   if (action.type === SET_CURRENT_OPPORTUNITY) {
     return {
       ...state,
@@ -417,6 +438,27 @@ const reducer = (state, action) => {
     };
   }
   if (action.type === EDIT_JOB_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+    };
+  }
+  if (action.type === EDIT_OPPORTUNITY_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === EDIT_OPPORTUNITY_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "Opportunity Updated!",
+    };
+  }
+  if (action.type === EDIT_OPPORTUNITY_ERROR) {
     return {
       ...state,
       isLoading: false,

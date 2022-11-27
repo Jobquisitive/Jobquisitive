@@ -3,7 +3,7 @@ import styled from 'styled-components'
 const Wrapper = styled.main`
     nav {
         width: var(--fluid-width);
-        max-width: var(--max-width);
+        max-width: fit-content;
         margin: 0 auto;
         height: var(--nav-height);
         display: flex;
@@ -25,8 +25,13 @@ const Wrapper = styled.main`
         }
     }
     p {
-        color: var(--grey-600);
+        align-items:center;
     }
+
+    .user-content{
+        padding-right:50px;
+    }
+
     .main-img {
         display: none;
     }
