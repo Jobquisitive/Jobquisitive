@@ -43,7 +43,7 @@ const SearchContainer = () => {
                         name='searchStatus'
                         value={searchStatus}
                         handleChange={handleSearch}
-                        list={['all', ...statusOptions]}
+                        list={['All', ...statusOptions]}
                     >
                         Search Status
                     </FormRowSelect>
@@ -54,7 +54,7 @@ const SearchContainer = () => {
                         name='searchType'
                         value={searchType}
                         handleChange={handleSearch}
-                        list={['all', ...jobTypeOptions]}
+                        list={['All', ...jobTypeOptions]}
                     ></FormRowSelect>
                     {/* sort */}
 

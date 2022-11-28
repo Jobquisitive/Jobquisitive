@@ -41,6 +41,19 @@ const Wrapper = styled.article`
       letter-spacing: var(--letterSpacing);
     }
   }
+
+  #jobD {
+    color: var(--grey-600);
+  }
+
+  .job-note {
+    color: var(--red-dark);
+  }
+
+  #jobDesc {
+    margin-left: 28px;
+  }
+
   .Pending {
     background: #fcefc7;
     color: #e9b949;
@@ -64,10 +77,10 @@ const Wrapper = styled.article`
       grid-template-columns: 1fr 1fr;
     }
     @media (min-width: 992px) {
-      grid-template-columns: 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
     }
     @media (min-width: 1120px) {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
     }
   }
 
@@ -86,7 +99,6 @@ const Wrapper = styled.article`
   .delete-btn {
     letter-spacing: var(--letterSpacing);
     cursor: pointer;
-    height: 30px;
   }
   .edit-btn {
     color: var(--green-dark);
@@ -97,6 +109,26 @@ const Wrapper = styled.article`
     color: var(--red-dark);
     background: var(--red-light);
     margin-right: 0.5rem;
+    margin-left: 0.5rem;
+  }
+  .btn-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 0.5rem;
+  }
+  .flex-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 4rem;
+  }
+  .form-opp {
+    ${"" /* max-width: var(--fixed-width); */}
+    background: var(--white);
+    border-radius: var(--borderRadius);
+    box-shadow: var(--shadow-2);
+    padding: 2rem 2.5rem;
+    margin: 2rem;
+    transition: var(--transition);
   }
   &:hover .actions {
     visibility: visible;

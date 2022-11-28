@@ -1,25 +1,38 @@
-import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
+import {
+  FaLocationArrow,
+  FaBriefcase,
+  FaCalendarAlt,
+  FaExternalLinkSquareAlt,
+} from "react-icons/fa";
 import { MdDescription } from "react-icons/md";
-import { Link } from "react-router-dom";
-import { useAppContext } from "../Context/appContext";
 import Wrapper from "../assets/wrappers/Opportunity";
 import JobInfo from "./JobInfo";
 import moment from "moment";
+import { useAppContext } from "../Context/appContext";
 
-const Opportunity = ({
-  _id,
+const OpportunityApplied = ({
   position,
   company,
   jobLocation,
   jobType,
   jobDescription,
   createdAt,
+  usersApplied,
 }) => {
-  const { setEditOpportunity, deleteOpportunity, setCurrentOpportunity } =
-    useAppContext();
-
   let date = moment(createdAt);
   date = date.format("MMM Do, YYYY");
+
+  const { user } = useAppContext();
+
+  const getResume = () => {
+    console.log(user._id);
+    console.log("App", usersApplied);
+    for (let i = 0; i < usersApplied.length; i++) {
+      if (usersApplied[i].userId === user._id) {
+        return usersApplied[i].fileId;
+      }
+    }
+  };
 
   return (
     <Wrapper>
@@ -42,36 +55,20 @@ const Opportunity = ({
           </strong>
           <div id="jobDesc">{jobDescription}</div>
         </p>
-        <footer>
-          <div className="actions">
-            <Link
-              to="/add-job"
-              onClick={() => setEditOpportunity(_id)}
-              className="btn edit-btn"
+        <p>
+          <strong>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`${getResume()}`}
             >
-              Edit
-            </Link>
-            <button
-              type="button"
-              className="btn delete-btn"
-              onClick={() => deleteOpportunity(_id)}
-            >
-              Delete
-            </button>
-            <Link
-              to="/opportunity-details"
-              className="btn edit-btn"
-              onClick={() => {
-                setCurrentOpportunity(_id);
-              }}
-            >
-              Details
-            </Link>
-          </div>
-        </footer>
+              <JobInfo icon={<FaExternalLinkSquareAlt />} text="Resume" />
+            </a>
+          </strong>
+        </p>
       </div>
     </Wrapper>
   );
 };
 
-export default Opportunity;
+export default OpportunityApplied;

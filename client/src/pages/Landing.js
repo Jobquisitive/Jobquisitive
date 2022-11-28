@@ -1,4 +1,4 @@
-import main from "../assets/images/main.svg";
+import main from "../assets/images/main-alternative.svg";
 import Wrapper from "../assets/wrappers/LandingPage";
 import { Logo } from "../Components";
 import { Link } from "react-router-dom";
@@ -16,22 +16,28 @@ const Landing = () => {
             Job <span>Tracking</span> App
           </h1>
           <p>
-            <strong>
-              WANT TO TRACK YOUR PROGRESS DURING THE JOB SEARCH PROCESS?
-            </strong>
+            <strong>JOB FINDING AND HIRING MADE EASY</strong>
             <br />
-            We have made this convenient for you!
-            <br /> Register on the app and track your progress now.
           </p>
+
           <div className="flex-container">
-            <div>
+            <div className="user-content">
+              <p>
+                Unlock infinite opportunities and also track your progress
+                easily.
+              </p>
               <strong>For Job Seekers</strong>
+              <br />
               <Link to="/register-user" className="btn btn-hero h3">
                 Login/Register
               </Link>
             </div>
             <div>
+              <p>
+                One stop solution for finding the top talents for your company.{" "}
+              </p>
               <strong>For Recruiters</strong>
+              <br />
               <Link to="/register-recruiter" className="btn btn-hero">
                 Login/Register
               </Link>

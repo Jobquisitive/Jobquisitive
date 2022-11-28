@@ -1,15 +1,14 @@
 import { useAppContext } from "../Context/appContext";
 import { useEffect } from "react";
 import Loading from "./Loading";
-import Opportunity from "./Opportunity";
+import OpportunityApplied from "./OpportunityApplied";
 import Wrapper from "../assets/wrappers/OpportunityContainer";
-import PageBtnContainer from "./PageBtnContainer";
 
-const OpportunitiesContainer = () => {
-  const { getAllOpportunitiesRecruiter, opportunities, isLoading, numOfPages } =
+const AppliedOpportunitiesContainer = () => {
+  const { getAppliedOpportunitiesUser, opportunities, isLoading } =
     useAppContext();
   useEffect(() => {
-    getAllOpportunitiesRecruiter();
+    getAppliedOpportunitiesUser();
     // eslint-disable-next-line
   }, []);
 
@@ -19,7 +18,7 @@ const OpportunitiesContainer = () => {
   if (opportunities.length === 0) {
     return (
       <Wrapper>
-        <h2>No jobs to display...</h2>
+        <h2>No applied jobs...</h2>
       </Wrapper>
     );
   }
@@ -30,12 +29,11 @@ const OpportunitiesContainer = () => {
       </h5>
       <div className="opp">
         {opportunities.map((job) => {
-          return <Opportunity key={job._id} {...job} />;
+          return <OpportunityApplied key={job._id} {...job} />;
         })}
       </div>
-      {numOfPages > 1 && <PageBtnContainer />}
     </Wrapper>
   );
 };
 
-export default OpportunitiesContainer;
+export default AppliedOpportunitiesContainer;

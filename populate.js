@@ -3,7 +3,7 @@ import { readFile } from 'fs/promises'
 import dotenv from 'dotenv'
 dotenv.config()
 
-import Job from './models/Jobs.js'
+import Job from './models/UserJobs.js'
 import connectDB from './db/connect.js'
 
 const start = async () => {
@@ -12,7 +12,7 @@ const start = async () => {
         await Job.deleteMany()
 
         const jsonProducts = JSON.parse(
-            await readFile(new URL('./mock-data.json', import.meta.url))
+            await readFile(new URL('./MOCK_DATA.json', import.meta.url))
         )
         await Job.create(jsonProducts)
         console.log('Success!!!!')

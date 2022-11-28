@@ -50,10 +50,10 @@ const Register = () => {
 
   return (
     <Wrapper className="full-page">
-      <h1 className="title">User Register</h1>
+      {/* <h1 className="title">User Register</h1> */}
       <form className="form" onSubmit={onSubmit}>
         <Logo />
-        <h3>{values.isMember ? "Login" : "Register"}</h3>
+        <h3>{values.isMember ? "User Login" : "User Register"}</h3>
         {showAlert && <Alert />}
         {/* name input */}
         {!values.isMember && (

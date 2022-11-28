@@ -53,7 +53,6 @@ app.use('/api/v1/user-auth',userAuthRouter)
 app.use('/api/v1/user-jobs', authenticateUser, userJobsRouter)
 app.use('/api/v1/recruiter-auth', recruiterAuthRouter)
 app.use('/api/v1/recruiter-jobs',authenticateUser, recruiterJobsRouter)
-
 app.get('*', function (request, response) {
     response.sendFile(path.resolve(__dirname, './client/build', 'index.html'))
 })
