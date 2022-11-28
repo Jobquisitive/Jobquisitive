@@ -21,7 +21,10 @@ const OpportunityApply = ({
 
   const { appliedJob } = useAppContext();
 
-  // const handleClose = () => setShow(false);
+  const handleClose = (e) => {
+    e.preventDefault();
+    setShow(false);
+  };
   const handleShow = () => setShow(true);
 
   const handleResumeInput = (e) => {
@@ -70,26 +73,41 @@ const OpportunityApply = ({
             </button>
           </div>
           <div className={show ? undefined : "hidden"}>
-            <form className="form">
-              <div className="form-center">
-                <FormRow
-                  type="text"
-                  labelText="Provide your resume drive link"
-                  name="resumeId"
-                  value={resume}
-                  handleChange={handleResumeInput}
-                />
+            <div className="flex-container form-opp">
+              <form>
+                <div>
+                  <FormRow
+                    type="text"
+                    labelText="Provide your resume drive link"
+                    name="resumeId"
+                    value={resume}
+                    handleChange={handleResumeInput}
+                  />
+                </div>
+                <div className="btn-container">
+                  <button
+                    className="btn btn-block"
+                    type="submit"
+                    onClick={handleSubmit}
+                  >
+                    Submit
+                  </button>
+                  <button
+                    className="btn btn-block delete-btn"
+                    onClick={handleClose}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+              <div>
+                <div className="job-note">Note:</div>
+                <p className="job-note">
+                  Please provide the google drive link of your resume and make
+                  sure it's read access is set to public.
+                </p>
               </div>
-              <div className="btn-container">
-                <button
-                  className="btn btn-block submit-btn"
-                  type="submit"
-                  onClick={handleSubmit}
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
+            </div>
           </div>
         </footer>
       </div>

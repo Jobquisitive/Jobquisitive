@@ -46,6 +46,10 @@ const Wrapper = styled.article`
     color: var(--grey-600);
   }
 
+  .job-note {
+    color: var(--red-dark);
+  }
+
   #jobDesc {
     margin-left: 28px;
   }
@@ -95,7 +99,6 @@ const Wrapper = styled.article`
   .delete-btn {
     letter-spacing: var(--letterSpacing);
     cursor: pointer;
-    height: 30px;
   }
   .edit-btn {
     color: var(--green-dark);
@@ -106,6 +109,26 @@ const Wrapper = styled.article`
     color: var(--red-dark);
     background: var(--red-light);
     margin-right: 0.5rem;
+    margin-left: 0.5rem;
+  }
+  .btn-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 0.5rem;
+  }
+  .flex-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 4rem;
+  }
+  .form-opp {
+    ${"" /* max-width: var(--fixed-width); */}
+    background: var(--white);
+    border-radius: var(--borderRadius);
+    box-shadow: var(--shadow-2);
+    padding: 2rem 2.5rem;
+    margin: 2rem;
+    transition: var(--transition);
   }
   &:hover .actions {
     visibility: visible;

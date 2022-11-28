@@ -360,6 +360,7 @@ const AppProvider = ({ children }) => {
         type: APPLIED_JOB_SUCCESS,
       });
       clearValues();
+      getAllOpportunitiesUser();
     } catch (error) {
       if (error.response.status !== 401) {
         dispatch({
@@ -456,6 +457,27 @@ const AppProvider = ({ children }) => {
     try {
       const { data } = await fetchAuth.get(url);
       const opportunities = data.jobs;
+      dispatch({
+        type: GET_OPPORTUNITIES_SUCCESS,
+        payload: {
+          opportunities,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      logoutUser();
+    }
+    clearAlert();
+  };
+
+  // Get all jobs applied by user :
+
+  const getAppliedOpportunitiesUser = async () => {
+    let url = `/user-jobs/applied-jobs`;
+    dispatch({ type: GET_OPPORTUNITIES_BEGIN });
+    try {
+      const { data } = await fetchAuth.get(url);
+      const opportunities = data.appliedJobs;
       dispatch({
         type: GET_OPPORTUNITIES_SUCCESS,
         payload: {
@@ -632,6 +654,7 @@ const AppProvider = ({ children }) => {
         clearFilters,
         changePage,
         setCurrentOpportunity,
+        getAppliedOpportunitiesUser,
       }}
     >
       {children}

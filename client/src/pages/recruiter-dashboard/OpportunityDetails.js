@@ -15,29 +15,36 @@ const OpportunityDetails = () => {
     return <Loading center="center" />;
   }
   if (currentOpportunity.usersApplied.length === 0) {
-    return (
-      <Wrapper>
-        <h2>No Applicants applied to this job.</h2>
-      </Wrapper>
-    );
+    return <h3>No one applied to this job...</h3>;
   }
 
   return (
     <div>
-      <h2>{currentOpportunity.position}</h2>
+      <h3>
+        {currentOpportunity.company} | {currentOpportunity.position}
+      </h3>
       {currentOpportunity.usersApplied.map((el, idx) => {
         return (
-          <Wrapper>
-            <div>
-              <header>
-                <div className="main-icon">{idx + 1}</div>
-                <div className="info">
-                  <h5>{`Applicant - ${idx + 1}`}</h5>
-                  <a href={`${el.fileId}`}>Resume Link</a>
-                </div>
-              </header>
-            </div>
-          </Wrapper>
+          <div>
+            <Wrapper>
+              <div>
+                <header>
+                  <div className="main-icon">{idx + 1}</div>
+                  <div className="info">
+                    <h5>{`Applicant - ${idx + 1}`}</h5>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`${el.fileId}`}
+                    >
+                      Resume Link
+                    </a>
+                  </div>
+                </header>
+              </div>
+            </Wrapper>
+            <br />
+          </div>
         );
       })}
     </div>

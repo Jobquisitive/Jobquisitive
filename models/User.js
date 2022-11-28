@@ -33,6 +33,17 @@ const UserSchema = mongoose.Schema({
     maxLength: 20,
     default: "My City",
   },
+  jobsApplied: [
+      {
+        jobId: {
+          type: mongoose.Types.ObjectId,
+          ref: "JobOpportunity",
+        },
+        fileId: {
+          type: String,
+        },
+      },
+    ],
 });
 
 UserSchema.pre("save", async function () {

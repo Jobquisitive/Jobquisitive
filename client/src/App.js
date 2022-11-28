@@ -12,6 +12,7 @@ import {
   Profile,
   SharedLayout,
   Opportunities,
+  AppliedOpportunities,
 } from "./pages/dashboard";
 import {
   RecruiterProfile,
@@ -35,18 +36,26 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route index element={<Stats />} />
+          {user && <Route index element={<Stats />} />}
 
           {user && <Route path="profile" element={<Profile />} />}
           {user && <Route path="add-job" element={<AddJob />} />}
           {user && <Route path="all-jobs" element={<AllJobs />} />}
           {user && <Route path="opportunities" element={<Opportunities />} />}
+          {user && (
+            <Route
+              path="applied-opportunities"
+              element={<AppliedOpportunities />}
+            />
+          )}
+
+          {recruiter && <Route index element={<AllOpportunities />} />}
 
           {recruiter && <Route path="profile" element={<RecruiterProfile />} />}
           {recruiter && <Route path="add-job" element={<PostJob />} />}
-          {recruiter && (
+          {/* {recruiter && (
             <Route path="all-jobs" element={<AllOpportunities />} />
-          )}
+          )} */}
           {recruiter && (
             <Route
               path="opportunity-details"
