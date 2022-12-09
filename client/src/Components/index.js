@@ -9,6 +9,7 @@ import SearchContainer from "./SearchContainer";
 import JobsContainer from "./JobsContainer";
 import OpportunitiesContainer from "./OpportunitiesContainer";
 import UserOpportunitiesContainer from "./UserOpportunitiesContainer";
+import UserOpportunitiesSearchContainer from "./UserOpportunitiesSearchContainer";
 import StatsContainer from "./StatsContainer";
 import StatsItem from "./StatsItem";
 import ChartsContainer from "./ChartsContainer";
@@ -28,6 +29,7 @@ export {
   JobsContainer,
   OpportunitiesContainer,
   UserOpportunitiesContainer,
+  UserOpportunitiesSearchContainer,
   StatsContainer,
   StatsItem,
   ChartsContainer,

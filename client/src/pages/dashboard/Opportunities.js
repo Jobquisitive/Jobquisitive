@@ -1,11 +1,14 @@
-import { UserOpportunitiesContainer, SearchContainer } from '../../Components'
+import {
+  UserOpportunitiesContainer,
+  UserOpportunitiesSearchContainer,
+} from "../../Components";
 const Opportunities = () => {
-    return (
-        <>
-            {/* <SearchContainer /> */}
-            <UserOpportunitiesContainer />
-        </>
-    )
-}
+  return (
+    <>
+      <UserOpportunitiesSearchContainer />
+      <UserOpportunitiesContainer />
+    </>
+  );
+};
 
-export default Opportunities
+export default Opportunities;

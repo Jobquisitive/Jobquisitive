@@ -9,6 +9,7 @@ const PostJob = () => {
     showAlert,
     displayAlert,
     position,
+    positionOptions,
     company,
     jobLocation,
     jobType,
@@ -53,15 +54,24 @@ const PostJob = () => {
             handleChange={handleJobInput}
           />
           {/* position */}
-          <FormRow
+          {/* <FormRow
             type="text"
             name="position"
             value={position}
             handleChange={handleJobInput}
-          />
+          /> */}
+          <FormRowSelect
+            labelText="Position Type"
+            name="position"
+            value={position}
+            handleChange={handleJobInput}
+            list={positionOptions}
+          >
+            Position Type
+          </FormRowSelect>
           {/* job type */}
           <FormRowSelect
-            labelText="type"
+            labelText="Job Type"
             name="jobType"
             value={jobType}
             handleChange={handleJobInput}

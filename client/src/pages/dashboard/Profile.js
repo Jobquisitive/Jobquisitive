@@ -1,14 +1,23 @@
 import { useState } from "react";
 import Wrapper from "../../assets/wrappers/DashboardFormPage";
-import { FormRow, Alert } from "../../Components";
+import { FormRow, FormRowSelect, Alert } from "../../Components";
 import { useAppContext } from "../../Context/appContext";
 
 const Profile = () => {
-  const { user, showAlert, displayAlert, isLoading, updateUser } =
-    useAppContext();
+  const {
+    user,
+    showAlert,
+    displayAlert,
+    isLoading,
+    updateUser,
+    positionOptions,
+  } = useAppContext();
   const [name, setName] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
   const [location, setLocation] = useState(user?.location);
+  const [aspiringPosition, setAspiringPosition] = useState(
+    user?.aspiringPosition
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,7 +25,7 @@ const Profile = () => {
       displayAlert();
       return;
     }
-    updateUser({ name, email, location });
+    updateUser({ name, email, location, aspiringPosition });
   };
   return (
     <Wrapper>
@@ -45,6 +54,16 @@ const Profile = () => {
             value={location}
             handleChange={(e) => setLocation(e.target.value)}
           />
+
+          <FormRowSelect
+            labelText="Position Type"
+            name="aspiringPosition"
+            value={aspiringPosition}
+            handleChange={(e) => setAspiringPosition(e.target.value)}
+            list={positionOptions}
+          >
+            Position Type
+          </FormRowSelect>
 
           <button
             id="btn-profile"

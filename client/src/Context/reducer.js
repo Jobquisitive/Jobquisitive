@@ -134,6 +134,7 @@ const reducer = (state, action) => {
       user: action.payload.user,
       userLocation: action.payload.location,
       jobLocation: action.payload.location,
+      searchPosition: action.payload.user.aspiringPosition,
       showAlert: true,
       alertType: "success",
       alertText: "Login Successful! Redirecting...",
@@ -220,6 +221,7 @@ const reducer = (state, action) => {
       token: action.payload.token,
       userLocation: action.payload.location,
       jobLocation: action.payload.location,
+      searchPosition: action.payload.user.aspiringPosition,
       showAlert: true,
       alertType: "success",
       alertText: "User Profile Updated!",
@@ -486,9 +488,10 @@ const reducer = (state, action) => {
     return {
       ...state,
       search: "",
-      searchStatus: "all",
-      searchType: "all",
-      sort: "latest",
+      searchStatus: "All",
+      searchType: "All",
+      sort: "Latest",
+      searchPosition: action.payload.user.aspiringPosition,
     };
   }
   if (action.type === CHANGE_PAGE) {

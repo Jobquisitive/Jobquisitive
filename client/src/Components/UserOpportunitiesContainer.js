@@ -5,11 +5,21 @@ import OpportunityApply from "./OpportunityApply";
 import Wrapper from "../assets/wrappers/OpportunityContainer";
 
 const UserOpportunitiesContainer = () => {
-  const { getAllOpportunitiesUser, opportunities, isLoading } = useAppContext();
+  const {
+    page,
+    search,
+    searchPosition,
+    searchType,
+    sort,
+    getAllOpportunitiesUser,
+    opportunities,
+    isLoading,
+  } = useAppContext();
+
   useEffect(() => {
     getAllOpportunitiesUser();
     // eslint-disable-next-line
-  }, []);
+  }, [page, search, searchPosition, searchType, sort]);
 
   if (isLoading) {
     return <Loading center="center" />;
