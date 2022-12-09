@@ -77,7 +77,13 @@ const initialState = {
   //jobs
   isEditing: false,
   editJobId: "",
-  position: "",
+  position: "Software Engineer",
+  positionOptions: [
+    "Software Engineer",
+    "Product Manager",
+    "Sales Manager",
+    "Data Scientist",
+  ],
   company: "",
   jobLocation: "",
   jobTypeOptions: ["Full-Time", "Part-Time", "Remote", "Internship"],
@@ -95,6 +101,7 @@ const initialState = {
   search: "",
   searchStatus: "All",
   searchType: "All",
+  searchPosition: "All",
   sort: "Latest",
   sortOptions: ["Latest", "Oldest", "A-Z", "Z-A"],
   currentOpportunityId: "",
@@ -163,7 +170,7 @@ const AppProvider = ({ children }) => {
         "/api/v1/user-auth/register-user",
         currentUser
       );
-      console.log(response);
+      console.log("RES", response);
       const { user, token, location } = response.data;
       dispatch({
         type: REGISTER_USER_SUCCESS,
@@ -211,7 +218,6 @@ const AppProvider = ({ children }) => {
         "/api/v1/user-auth/login-user",
         currentUser
       );
-      console.log(response);
       const { user, token } = response.data;
       dispatch({
         type: LOGIN_USER_SUCCESS,
@@ -452,7 +458,12 @@ const AppProvider = ({ children }) => {
   };
 
   const getAllOpportunitiesUser = async () => {
-    let url = `/user-jobs/opportunities`;
+    const { page, search, searchPosition, searchType, sort } = state;
+    let url = `/user-jobs/opportunities?page=${page}&position=${searchPosition}&jobType=${searchType}&sort=${sort}`;
+    if (search) {
+      url = url + `&search=${search}`;
+    }
+    // let url = `/user-jobs/opportunities`;
     dispatch({ type: GET_OPPORTUNITIES_BEGIN });
     try {
       const { data } = await fetchAuth.get(url);
@@ -614,7 +625,9 @@ const AppProvider = ({ children }) => {
   };
 
   const clearFilters = () => {
-    dispatch({ type: CLEAR_FILTERS });
+    const { user } = state;
+    dispatch({ type: CLEAR_FILTERS, payload: { user } });
+    // getAllJobs();
   };
 
   const changePage = (page) => {

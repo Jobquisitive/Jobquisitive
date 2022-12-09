@@ -3,22 +3,22 @@ import { StatusCodes } from "http-status-codes";
 import { BadRequestError, UnauthenticatedError } from "../errors/index.js";
 
 const register = async (req, res) => {
-  const { name, email, password } = req.body;
-  if (!name || !email || !password) {
+  const { name, email, password, aspiringPosition } = req.body;
+  if (!name || !email || !password || !aspiringPosition) {
     throw new BadRequestError("Please provide all the details!");
   }
   const userAlreadyExists = await User.findOne({ email });
   if (userAlreadyExists) {
     throw new BadRequestError("Email already in use!");
   }
-  const user = await User.create({ name, email, password });
+  const user = await User.create({ name, email, password, aspiringPosition });
   const token = user.createJWT();
   res.status(StatusCodes.CREATED).json({
     user: {
       email: user.email,
       name: user.name,
-      lastName: user.lastName,
       location: user.location,
+      aspiringPosition: user.aspiringPosition,
     },
     token,
     location: user.location,
@@ -44,14 +44,15 @@ const login = async (req, res) => {
 };
 
 const update = async (req, res) => {
-  const { email, name, location } = req.body;
-  if (!email || !name || !location) {
+  const { email, name, location, aspiringPosition } = req.body;
+  if (!email || !name || !location || !aspiringPosition) {
     throw new BadRequestError("Please provide all details");
   }
   const user = await User.findOne({ _id: req.user.userId });
   user.email = email;
   user.name = name;
   user.location = location;
+  user.aspiringPosition = aspiringPosition;
 
   await user.save();
   const token = user.createJWT();

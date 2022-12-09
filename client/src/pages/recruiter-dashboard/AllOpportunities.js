@@ -1,11 +1,11 @@
-import { OpportunitiesContainer, SearchContainer } from '../../Components'
+import { OpportunitiesContainer, SearchContainer } from "../../Components";
 const AllOpportunities = () => {
-    return (
-        <>
-            {/* <SearchContainer /> */}
-            <OpportunitiesContainer />
-        </>
-    )
-}
+  return (
+    <>
+      {/* <SearchContainer /> */}
+      <OpportunitiesContainer />
+    </>
+  );
+};
 
-export default AllOpportunities
+export default AllOpportunities;

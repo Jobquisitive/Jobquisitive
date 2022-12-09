@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Logo, FormRow, Alert } from "../Components";
+import { Logo, FormRow, FormRowSelect, Alert } from "../Components";
 import Wrapper from "../assets/wrappers/RegisterPage";
 import { useAppContext } from "../Context/appContext";
 import { useNavigate } from "react-router-dom";
@@ -8,14 +8,22 @@ const initialState = {
   name: "",
   email: "",
   password: "",
+  aspiringPosition: "Software Engineer",
   isMember: true,
 };
 
 const Register = () => {
   const navigate = useNavigate();
   const [values, setValues] = useState(initialState);
-  const { user, isLoading, showAlert, displayAlert, registerUser, loginUser } =
-    useAppContext();
+  const {
+    user,
+    isLoading,
+    showAlert,
+    displayAlert,
+    registerUser,
+    loginUser,
+    positionOptions,
+  } = useAppContext();
 
   const toggleMember = () => {
     setValues({ ...values, isMember: !values.isMember });
@@ -27,12 +35,12 @@ const Register = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const { name, email, password, isMember } = values;
+    const { name, email, password, isMember, aspiringPosition } = values;
     if (!email || !password || (!isMember && !name)) {
       displayAlert();
       return;
     }
-    const currentUser = { name, email, password };
+    const currentUser = { name, email, password, aspiringPosition };
     if (isMember) {
       loginUser(currentUser);
     } else {
@@ -57,12 +65,23 @@ const Register = () => {
         {showAlert && <Alert />}
         {/* name input */}
         {!values.isMember && (
-          <FormRow
-            type="text"
-            name="name"
-            value={values.name}
-            handleChange={handleChange}
-          />
+          <>
+            <FormRow
+              type="text"
+              name="name"
+              value={values.name}
+              handleChange={handleChange}
+            />
+            <FormRowSelect
+              labelText="Position Type"
+              name="position"
+              value={values.aspiringPosition}
+              handleChange={handleChange}
+              list={positionOptions}
+            >
+              Position Type
+            </FormRowSelect>
+          </>
         )}
         {/* email input */}
         <FormRow

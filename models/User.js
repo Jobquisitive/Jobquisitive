@@ -21,6 +21,15 @@ const UserSchema = mongoose.Schema({
     },
     unique: true,
   },
+  aspiringPosition: {
+    type: String,
+    enum: [
+      "Software Engineer",
+      "Product Manager",
+      "Sales Manager",
+      "Data Scientist",
+    ],
+  },
   password: {
     type: String,
     required: [true, "Please provide password"],
@@ -34,16 +43,16 @@ const UserSchema = mongoose.Schema({
     default: "My City",
   },
   jobsApplied: [
-      {
-        jobId: {
-          type: mongoose.Types.ObjectId,
-          ref: "JobOpportunity",
-        },
-        fileId: {
-          type: String,
-        },
+    {
+      jobId: {
+        type: mongoose.Types.ObjectId,
+        ref: "JobOpportunity",
       },
-    ],
+      fileId: {
+        type: String,
+      },
+    },
+  ],
 });
 
 UserSchema.pre("save", async function () {

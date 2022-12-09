@@ -81,7 +81,53 @@ const getAllJobs = async (req, res) => {
 };
 
 const getAllOpportunities = async (req, res) => {
-  let result = await JobOpportunity.find({});
+  const { search, position, jobType, sort } = req.query;
+
+  const queryObject = {};
+  if (position && position !== "All") {
+    queryObject.position = position;
+  }
+  if (jobType && jobType !== "All") {
+    queryObject.jobType = jobType;
+  }
+  if (search) {
+    queryObject.company = { $regex: search, $options: "i" };
+  }
+
+  let result = await JobOpportunity.find(queryObject);
+
+  // // chain sort conditions
+  // if (sort === "Latest") {
+  //   result = result.sort("-createdAt");
+  // }
+  // if (sort === "Oldest") {
+  //   result = result.sort("createdAt");
+  // }
+  // if (sort === "A-Z") {
+  //   result = result.sort("position");
+  // }
+  // if (sort === "Z-A") {
+  //   result = result.sort("-position");
+  // }
+  // // setup pagination
+  // const page = Number(req.query.page) || 1;
+  // const limit = Number(req.query.limit) || 10;
+  // const skip = (page - 1) * limit; //10
+  // result = result.skip(skip).limit(limit);
+
+  // let jobs = result.filter(function (ob) {
+  //   for (let i = 0; i < ob.usersApplied.length; i++) {
+  //     if (ob.usersApplied[i].userId._id == req.user.userId) {
+  //       return false;
+  //     }
+  //   }
+  //   return true;
+  // });
+
+  // res.status(StatusCodes.OK).json({ jobs });
+
+  // ---- OLD -----
+  // let result = await JobOpportunity.find({});
   // const page = Number(req.query.page) || 1;
   // const limit = Number(req.query.limit) || 10;
   // const skip = (page - 1) * limit; //10
