@@ -52,6 +52,7 @@ import {
   SHOW_STATS_BEGIN,
   SHOW_STATS_SUCCESS,
   CLEAR_FILTERS,
+  CLEAR_FILTERS_RECRUITER,
   CHANGE_PAGE,
 } from "./actions";
 import { initialState } from "./appContext";
@@ -492,6 +493,14 @@ const reducer = (state, action) => {
       searchType: "All",
       sort: "Latest",
       searchPosition: action.payload.user.aspiringPosition,
+    };
+  }
+  if (action.type === CLEAR_FILTERS_RECRUITER) {
+    return {
+      ...state,
+      search: "",
+      searchYoe: "All",
+      searchGender: "All",
     };
   }
   if (action.type === CHANGE_PAGE) {

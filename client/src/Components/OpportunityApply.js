@@ -18,6 +18,7 @@ const OpportunityApply = ({
 }) => {
   const [show, setShow] = useState(false);
   const [resume, setResume] = useState("");
+  const [salaryExpectation, setSalaryExpectation] = useState("");
 
   const { appliedJob } = useAppContext();
 
@@ -32,10 +33,15 @@ const OpportunityApply = ({
     setResume(e.target.value);
   };
 
+  const handleSalaryInput = (e) => {
+    e.preventDefault();
+    setSalaryExpectation(e.target.value);
+  };
+
   const handleSubmit = (e) => {
     // Handle Post Resume in appContext
     e.preventDefault();
-    appliedJob(_id, resume);
+    appliedJob(_id, resume, salaryExpectation);
   };
 
   let date = moment(createdAt);
@@ -82,6 +88,13 @@ const OpportunityApply = ({
                     name="resumeId"
                     value={resume}
                     handleChange={handleResumeInput}
+                  />
+                  <FormRow
+                    type="number"
+                    labelText="Salary Expectation (Lakhs/Year)"
+                    name="salaryExpectation"
+                    value={salaryExpectation}
+                    handleChange={handleSalaryInput}
                   />
                 </div>
                 <div className="btn-container">

@@ -26,10 +26,18 @@ const OpportunityApplied = ({
 
   const getResume = () => {
     console.log(user._id);
-    console.log("App", usersApplied);
     for (let i = 0; i < usersApplied.length; i++) {
       if (usersApplied[i].userId === user._id) {
         return usersApplied[i].fileId;
+      }
+    }
+  };
+
+  const getSalaryExpectation = () => {
+    console.log(user._id);
+    for (let i = 0; i < usersApplied.length; i++) {
+      if (usersApplied[i].userId === user._id) {
+        return usersApplied[i].salaryExpectation;
       }
     }
   };
@@ -54,6 +62,12 @@ const OpportunityApplied = ({
             <JobInfo icon={<MdDescription />} text="Job Description" />
           </strong>
           <div id="jobDesc">{jobDescription}</div>
+        </p>
+        <p>
+          <strong id="jobD">
+            <JobInfo icon={<MdDescription />} text="Salary Expectation" />
+          </strong>
+          <div id="jobDesc">{getSalaryExpectation()} Lakhs/Year</div>
         </p>
         <p>
           <strong>

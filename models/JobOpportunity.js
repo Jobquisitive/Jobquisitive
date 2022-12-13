@@ -37,8 +37,28 @@ const JobOpportunitySchema = mongoose.Schema(
           type: mongoose.Types.ObjectId,
           ref: "User",
         },
+        name: {
+          type: String,
+        },
         fileId: {
           type: String,
+        },
+        salaryExpectation: {
+          type: Number,
+        },
+        gender: {
+          type: String,
+          enum: ["Male", "Female", "Others"],
+        },
+        yoe: {
+          type: String,
+          enum: [
+            "0 - 2 years",
+            "2 - 4 years",
+            "4 - 6 years",
+            "6 - 10 years",
+            "10+ years",
+          ],
         },
       },
     ],
