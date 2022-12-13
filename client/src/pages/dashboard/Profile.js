@@ -18,6 +18,8 @@ const Profile = () => {
   const [aspiringPosition, setAspiringPosition] = useState(
     user?.aspiringPosition
   );
+  const [gender, setGender] = useState(user?.gender);
+  const [yoe, setYoe] = useState(user?.yoe);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,7 +27,7 @@ const Profile = () => {
       displayAlert();
       return;
     }
-    updateUser({ name, email, location, aspiringPosition });
+    updateUser({ name, email, location, aspiringPosition, gender, yoe });
   };
   return (
     <Wrapper>
@@ -63,6 +65,30 @@ const Profile = () => {
             list={positionOptions}
           >
             Position Type
+          </FormRowSelect>
+          <FormRowSelect
+            labelText="Gender"
+            name="gender"
+            value={gender}
+            handleChange={(e) => setGender(e.target.value)}
+            list={["Male", "Female", "Others"]}
+          >
+            Gender
+          </FormRowSelect>
+          <FormRowSelect
+            labelText="Years of Experience"
+            name="yoe"
+            value={yoe}
+            handleChange={(e) => setYoe(e.target.value)}
+            list={[
+              "0 - 2 years",
+              "2 - 4 years",
+              "4 - 6 years",
+              "6 - 10 years",
+              "10+ years",
+            ]}
+          >
+            Years of Experience
           </FormRowSelect>
 
           <button

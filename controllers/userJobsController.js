@@ -170,8 +170,8 @@ const updateJob = async (req, res) => {
 // applied job
 const appliedJob = async (req, res) => {
   const { id: jobId } = req.params;
-  const { user, fileId } = req.body;
-  if (!user || !fileId) {
+  const { user, fileId, salaryExpectation } = req.body;
+  if (!user || !fileId || !salaryExpectation) {
     throw new BadRequestError("Please Provide All Values");
   }
   const job = await JobOpportunity.findOne({ _id: jobId });
@@ -185,7 +185,16 @@ const appliedJob = async (req, res) => {
 
   // update
   const update = {
-    $push: { usersApplied: { userId: user._id, fileId: fileId } },
+    $push: {
+      usersApplied: {
+        userId: user._id,
+        name: user.name,
+        fileId: fileId,
+        salaryExpectation: salaryExpectation,
+        gender: user.gender,
+        yoe: user.yoe,
+      },
+    },
   };
   const appliedJob = await JobOpportunity.findOneAndUpdate(
     { _id: jobId },
@@ -198,7 +207,7 @@ const appliedJob = async (req, res) => {
 
   // adding this job to user's array.
   const updateUser = {
-    $push: { jobsApplied: { jobId, fileId } },
+    $push: { jobsApplied: { jobId, fileId, salaryExpectation } },
   };
   await User.findOneAndUpdate({ _id: user._id }, updateUser, {
     new: true,

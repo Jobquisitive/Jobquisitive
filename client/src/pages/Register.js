@@ -10,6 +10,8 @@ const initialState = {
   password: "",
   aspiringPosition: "Software Engineer",
   isMember: true,
+  gender: "Male",
+  yoe: "0 - 2 years",
 };
 
 const Register = () => {
@@ -35,12 +37,20 @@ const Register = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const { name, email, password, isMember, aspiringPosition } = values;
+    const { name, email, password, isMember, aspiringPosition, gender, yoe } =
+      values;
     if (!email || !password || (!isMember && !name)) {
       displayAlert();
       return;
     }
-    const currentUser = { name, email, password, aspiringPosition };
+    const currentUser = {
+      name,
+      email,
+      password,
+      aspiringPosition,
+      gender,
+      yoe,
+    };
     if (isMember) {
       loginUser(currentUser);
     } else {
@@ -80,6 +90,30 @@ const Register = () => {
               list={positionOptions}
             >
               Position Type
+            </FormRowSelect>
+            <FormRowSelect
+              labelText="Gender"
+              name="gender"
+              value={values.gender}
+              handleChange={handleChange}
+              list={["Male", "Female", "Others"]}
+            >
+              Gender
+            </FormRowSelect>
+            <FormRowSelect
+              labelText="Years Of Experience"
+              name="yoe"
+              value={values.yoe}
+              handleChange={handleChange}
+              list={[
+                "0 - 2 years",
+                "2 - 4 years",
+                "4 - 6 years",
+                "6 - 10 years",
+                "10+ years",
+              ]}
+            >
+              Years Of Experience
             </FormRowSelect>
           </>
         )}

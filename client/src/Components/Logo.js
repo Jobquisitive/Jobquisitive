@@ -1,7 +1,17 @@
-import logo from '../assets/images/logo.svg'
+import logo from "../assets/images/logo.svg";
+import { useNavigate } from "react-router-dom";
 
 const Logo = () => {
-    return <img src={logo} alt='Job Tracker' className='logo' />
-}
+  const navigate = useNavigate();
+  return (
+    <img
+      onClick={() => navigate("/")}
+      src={logo}
+      alt="Job Tracker"
+      className="logo"
+      style={{ cursor: "pointer" }}
+    />
+  );
+};
 
-export default Logo
+export default Logo;

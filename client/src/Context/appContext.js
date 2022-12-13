@@ -53,6 +53,7 @@ import {
   SHOW_STATS_BEGIN,
   SHOW_STATS_SUCCESS,
   CLEAR_FILTERS,
+  CLEAR_FILTERS_RECRUITER,
   CHANGE_PAGE,
   SET_CURRENT_OPPORTUNITY,
 } from "./actions";
@@ -102,6 +103,8 @@ const initialState = {
   searchStatus: "All",
   searchType: "All",
   searchPosition: "All",
+  searchYoe: "All",
+  searchGender: "All",
   sort: "Latest",
   sortOptions: ["Latest", "Oldest", "A-Z", "Z-A"],
   currentOpportunityId: "",
@@ -170,7 +173,7 @@ const AppProvider = ({ children }) => {
         "/api/v1/user-auth/register-user",
         currentUser
       );
-      console.log("RES", response);
+      console.log("RES REGISTER", response);
       const { user, token, location } = response.data;
       dispatch({
         type: REGISTER_USER_SUCCESS,
@@ -181,7 +184,7 @@ const AppProvider = ({ children }) => {
       console.log(error.response);
       dispatch({
         type: REGISTER_USER_ERROR,
-        payload: { msg: error.response.data.msg },
+        payload: { msg: error.response.data.message },
       });
     }
     clearAlert();
@@ -205,7 +208,7 @@ const AppProvider = ({ children }) => {
       console.log(error.response);
       dispatch({
         type: REGISTER_RECRUITER_ERROR,
-        payload: { msg: error.response.data.msg },
+        payload: { msg: error.response.data.message },
       });
     }
     clearAlert();
@@ -227,7 +230,7 @@ const AppProvider = ({ children }) => {
     } catch (error) {
       dispatch({
         type: LOGIN_USER_ERROR,
-        payload: { msg: error.response.data.msg },
+        payload: { msg: error.response.data.message },
       });
     }
     clearAlert();
@@ -250,7 +253,7 @@ const AppProvider = ({ children }) => {
     } catch (error) {
       dispatch({
         type: LOGIN_RECRUITER_ERROR,
-        payload: { msg: error.response.data.msg },
+        payload: { msg: error.response.data.message },
       });
     }
     clearAlert();
@@ -284,7 +287,7 @@ const AppProvider = ({ children }) => {
       if (error.response.status !== 401) {
         dispatch({
           type: UPDATE_USER_ERROR,
-          payload: { msg: error.response.data.msg },
+          payload: { msg: error.response.data.message },
         });
       }
     }
@@ -310,7 +313,7 @@ const AppProvider = ({ children }) => {
       if (error.response.status !== 401) {
         dispatch({
           type: UPDATE_RECRUITER_ERROR,
-          payload: { msg: error.response.data.msg },
+          payload: { msg: error.response.data.message },
         });
       }
     }
@@ -346,7 +349,7 @@ const AppProvider = ({ children }) => {
       if (error.response.status !== 401) {
         dispatch({
           type: CREATE_JOB_ERROR,
-          payload: { msg: error.response.data.msg },
+          payload: { msg: error.response.data.message },
         });
       }
     }
@@ -354,13 +357,14 @@ const AppProvider = ({ children }) => {
   };
 
   // user applied job:
-  const appliedJob = async (_id, fileId) => {
+  const appliedJob = async (_id, fileId, salaryExpectation) => {
     dispatch({ type: APPLIED_JOB_BEGIN });
     try {
       const { user } = state;
       await fetchAuth.patch(`/user-jobs/apply/${_id}`, {
         user,
         fileId,
+        salaryExpectation,
       });
       dispatch({
         type: APPLIED_JOB_SUCCESS,
@@ -371,7 +375,7 @@ const AppProvider = ({ children }) => {
       if (error.response.status !== 401) {
         dispatch({
           type: APPLIED_JOB_ERROR,
-          payload: { msg: error.response.data.msg },
+          payload: { msg: error.response.data.message },
         });
       }
     }
@@ -401,7 +405,7 @@ const AppProvider = ({ children }) => {
       if (error.response.status !== 401) {
         dispatch({
           type: POST_JOB_ERROR,
-          payload: { msg: error.response.data.msg },
+          payload: { msg: error.response.data.message },
         });
       }
     }
@@ -534,7 +538,7 @@ const AppProvider = ({ children }) => {
       if (error.response.status === 401) return;
       dispatch({
         type: EDIT_JOB_ERROR,
-        payload: { msg: error.response.data.msg },
+        payload: { msg: error.response.data.message },
       });
     }
     clearAlert();
@@ -560,7 +564,7 @@ const AppProvider = ({ children }) => {
       if (error.response.status === 401) return;
       dispatch({
         type: EDIT_OPPORTUNITY_ERROR,
-        payload: { msg: error.response.data.msg },
+        payload: { msg: error.response.data.message },
       });
     }
     clearAlert();
@@ -591,7 +595,6 @@ const AppProvider = ({ children }) => {
 
   const getCurrentOpportunityDetails = async () => {
     let url = `/recruiter-jobs/opportunity/${state.currentOpportunityId}`;
-    console.log("id", state.currentOpportunityId);
     dispatch({ type: GET_CURRENT_OPPORTUNITY_DETAILS_BEGIN });
     try {
       const { data } = await fetchAuth.get(url);
@@ -630,6 +633,11 @@ const AppProvider = ({ children }) => {
     // getAllJobs();
   };
 
+  const clearFiltersRecruiter = () => {
+    const { recruiter } = state;
+    dispatch({ type: CLEAR_FILTERS_RECRUITER, payload: { recruiter } });
+  };
+
   const changePage = (page) => {
     dispatch({ type: CHANGE_PAGE, payload: { page } });
   };
@@ -665,6 +673,7 @@ const AppProvider = ({ children }) => {
         editOpportunity,
         showStats,
         clearFilters,
+        clearFiltersRecruiter,
         changePage,
         setCurrentOpportunity,
         getAppliedOpportunitiesUser,
